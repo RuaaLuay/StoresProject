@@ -66,9 +66,10 @@
 {{--                        </div>--}}
                     </div>
                 </div>
-                <div class="row">
+                <div class="row ">
                     @foreach($products as $product)
-                        <div class="col-md-4">
+                        <div class="col-md-4 product-data">
+                            <p class="h3 text-success align-content-center">Name: {{$product->name}}</p>
                             <p class="h3 text-success align-content-center">Name: {{$product->name}}</p>
                             <div class="card mb-4 product-wap rounded-0">
                                 <div class="card rounded-0">
@@ -100,11 +101,12 @@
                                     <p>Description: {{$product->description}}</p>
                                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
-                                            <li>
-                                                <form method="post" action="{{URL('website/products/purchase/'.$product->id)}}">
+                                            <li >
+                                                <form method="post" data-action="{{ url("cart/store") }}">
                                                     @csrf
+                                                    <input type="hidden"  class="product_id" name ="product_id" value="{{$product->id}}">
                                                     <input type="hidden"  name ="product_price" value="{{  $product->flag ?  $product->discount_price : $product->base_price}}">
-                                                    <button class="btn btn-success text-white mt-2" type="submit">
+                                                    <button class="btn btn-success addToCart text-white mt-2">
                                                         <i class="fas fa-cart-plus"></i></button>
                                                 </form>
                                             </li>
@@ -125,6 +127,36 @@
 
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $('.addToCart').click(function (e) {
+                e.preventDefault();
+                var product_id = $(this).closest('.product-data').find('.product_id').val();
+                var url = $(this).attr('data-action');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: "post",
+                    url : "{{URL("cart/store/")}}",
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "product_id" : product_id
+                    },
+                    success: function (response) {
+                        alert("added to cart");
+                    },
+                    error: function (response) {
+                        console.log(response.responseText);
+                    }
+
+                })
+            })
+        })
+
+    </script>
 
     @include('WebSiteViews.includes.brands')
     @stop

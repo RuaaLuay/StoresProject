@@ -20,7 +20,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href={{url('dashboard/products')}}>
+                            <a class="nav-link" href={{url('admin/dashboard/products')}}>
                                 <i class="fas fa-shopping-cart"></i>
                                 Products
                             </a>
@@ -41,12 +41,13 @@
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                        <form method="post" action="{{URL('logout')}}">
+                        <form method="post" action="{{ route('admin-logout') }}">
                             @csrf
-
                             <button class="nav-item ml-auto mr-0" type="submit"
                                     aria-controls="navbarSupportedContent"
-                            >{{auth()->user()->name}}, <b>Logout</b></button>
+                            >
+                                    {{ @Auth::guard('admin')->user()->name }},
+                                <b>Logout</b></button>
                         </form>
                         </li>
                     </ul>

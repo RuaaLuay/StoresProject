@@ -17,6 +17,7 @@ class storesController extends Controller
         $trashedStores = store::select('*')->onlyTrashed()->get();
         return view('DashboardViews.MainDashboardViews.stores')->with('stores',$stores)->with('trashedStores',$trashedStores);
     }
+
     public function destroy ($id) {
         store::where('id', $id)->delete();
         return redirect()->back();
