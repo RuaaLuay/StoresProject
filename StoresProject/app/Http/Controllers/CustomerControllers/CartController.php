@@ -22,6 +22,11 @@ class CartController extends Controller
 {
     use Notifiable;
 
+
+
+
+
+
     public function store(Request $request)
     {
         $product_id = $request->input('product_id');
